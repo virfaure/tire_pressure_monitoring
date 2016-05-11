@@ -13,13 +13,13 @@ public class Alarm {
     }
 
     public Alarm(){
-        this(new Sensor());
+        this(new PressureTelemetrySensor());
     }
 
     public void check() {
-        double psiPressureValue = getPressureValue();
+        double probeValue = getProbeValue();
 
-        if (isNotInSafetyRange(psiPressureValue)) {
+        if (isNotInSafetyRange(probeValue)) {
             alarmIsOn();
         }
     }
@@ -28,12 +28,12 @@ public class Alarm {
         alarmOn = true;
     }
 
-    private boolean isNotInSafetyRange(double psiPressureValue) {
-        return (psiPressureValue < LowPressureThreshold || HighPressureThreshold < psiPressureValue);
+    private boolean isNotInSafetyRange(double probeValue) {
+        return (probeValue < LowPressureThreshold || HighPressureThreshold < probeValue);
     }
 
-    private double getPressureValue() {
-        return sensor.popNextPressurePsiValue();
+    private double getProbeValue() {
+        return sensor.pobreValue();
     }
 
     public boolean isAlarmOn() {

@@ -44,7 +44,7 @@ public class AlarmTest {
 
         alarm.check();
 
-        verify(sensor).popNextPressurePsiValue();
+        verify(sensor).pobreValue();
     }
 
     private Alarm create_alarm_with_sensor(double pressure) {
@@ -54,7 +54,7 @@ public class AlarmTest {
 
     public Sensor create_sensor_returning_pressure(double value){
         Sensor sensor = mock(Sensor.class);
-        doReturn(value).when(sensor).popNextPressurePsiValue();
+        doReturn(value).when(sensor).pobreValue();
 
         return sensor;
     }
