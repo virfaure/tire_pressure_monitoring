@@ -19,12 +19,20 @@ public class Alarm {
     public void check() {
         double psiPressureValue = getPressureValue();
 
-        if (psiPressureValue < LowPressureThreshold || HighPressureThreshold < psiPressureValue) {
-            alarmOn = true;
+        if (isNotInSafetyRange(psiPressureValue)) {
+            alarmIsOn();
         }
     }
 
-    protected double getPressureValue() {
+    private void alarmIsOn() {
+        alarmOn = true;
+    }
+
+    private boolean isNotInSafetyRange(double psiPressureValue) {
+        return (psiPressureValue < LowPressureThreshold || HighPressureThreshold < psiPressureValue);
+    }
+
+    private double getPressureValue() {
         return sensor.popNextPressurePsiValue();
     }
 
