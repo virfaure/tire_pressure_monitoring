@@ -5,15 +5,17 @@ public class Alarm {
     private final double HighPressureThreshold = 21;
 
     private Sensor sensor;
+    private SafetyRange safetyRange;
 
     private boolean alarmOn = false;
 
-    public Alarm(Sensor sensor){
+    public Alarm(Sensor sensor, SafetyRange safetyRange){
         this.sensor = sensor;
+        this.safetyRange = safetyRange;
     }
 
     public Alarm(){
-        this(new PressureTelemetrySensor());
+        this(new PressureTelemetrySensor(), new SafetyRange(17, 21));
     }
 
     public void check() {
@@ -24,12 +26,12 @@ public class Alarm {
         }
     }
 
-    private void alarmIsOn() {
-        alarmOn = true;
+    private boolean isNotInSafetyRange(double probeValue){
+        return this.safetyRange.includes(probeValue);
     }
 
-    private boolean isNotInSafetyRange(double probeValue) {
-        return (probeValue < LowPressureThreshold || HighPressureThreshold < probeValue);
+    private void alarmIsOn() {
+        alarmOn = true;
     }
 
     private double getProbeValue() {
