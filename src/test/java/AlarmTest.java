@@ -10,9 +10,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class AlarmTest {
+    private Alarm alarm;
+
     @Test
     public void alarm_is_on_when_pressure_is_too_low() { // flaky test!!
-        Alarm alarm = create_alarm_with_sensor_and_safety_range(5.0, new SafetyRange(10.0, 20.0));
+        alarm = AlarmBuilder.anAlarm().
+                usingSensor(thatProbes(5.0)).
+                withSafetyRange(10.0, 20.0).
+                build();
 
         alarm.check();
 
@@ -22,7 +27,10 @@ public class AlarmTest {
 
     @Test
     public void alarm_is_on_when_pressure_is_too_high(){
-        Alarm alarm = create_alarm_with_sensor_and_safety_range(30.0, new SafetyRange(5.0, 11.0));
+        alarm = AlarmBuilder.anAlarm().
+                usingSensor(thatProbes(30.0)).
+                withSafetyRange(5.0, 11.0).
+                build();
 
         alarm.check();
 
@@ -31,7 +39,10 @@ public class AlarmTest {
 
     @Test
     public void alarm_is_off_when_pressure_is_in_safety_range(){
-        Alarm alarm = create_alarm_with_sensor_and_safety_range(20.0, new SafetyRange(10.0, 25.0));
+        alarm = AlarmBuilder.anAlarm().
+                usingSensor(thatProbes(20.0)).
+                withSafetyRange(10.0, 25.0).
+                build();
 
         alarm.check();
 
@@ -48,12 +59,7 @@ public class AlarmTest {
         verify(sensor).pobreValue();
     }
 
-    private Alarm create_alarm_with_sensor_and_safety_range(double pressure, SafetyRange safetyRange) {
-        Sensor sensor = create_sensor_returning_pressure(pressure);
-        return new Alarm(sensor, safetyRange);
-    }
-
-    public Sensor create_sensor_returning_pressure(double value){
+    public Sensor thatProbes(double value){
         Sensor sensor = mock(Sensor.class);
         doReturn(value).when(sensor).pobreValue();
 
